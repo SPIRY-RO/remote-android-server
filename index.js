@@ -3,8 +3,8 @@ const socket = require("websocket").server
 const server = http.createServer(() => {
 })
 
-server.listen(3001, () => {
-    console.log("Server is listeing in 3001");
+server.listen(3002, () => {
+    console.log("Server is listeing in 3002");
 })
 
 const users = []
