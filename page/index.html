@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Mobile Dashboard</title>
+    <!-- Include Material Design Lite CSS and JavaScript -->
+    <link
+      rel="stylesheet"
+      href="https://code.getmdl.io/1.3.0/material.indigo-pink.min.css"
+    />
+    <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+    <!-- Include Material Icons -->
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="wrapper">
+      <div class="wrapper-content">
+        <h2 class="text-center">Mobile Dashboard</h2>
+        <!-- Login Form -->
+        <div id="login-container">
+          <div class="mdl-card mdl-shadow--2dp" style="padding: 20px">
+            <h3>Login</h3>
+            <div class="mdl-textfield mdl-js-textfield">
+              <input
+                class="mdl-textfield__input"
+                type="text"
+                id="username"
+                placeholder="Enter username"
+              />
+            </div>
+            <br />
+            <button
+              class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored"
+              onclick="login()"
+            >
+              Login
+            </button>
+          </div>
+        </div>
+
+        <!-- Video Display -->
+        <div id="video-container">
+          <div class="mobile-frame">
+            <video
+              id="remoteVideo"
+              autoplay
+              playsinline
+              style="width: 100%; height: 100%"
+            ></video>
+          </div>
+        </div>
+
+        <!-- Request to Start Streaming -->
+        <div id="request-container" class="hidden">
+          <div
+            style="padding: 20px; width: 100%; min-height: auto"
+            class="mdl-card mdl-shadow--2dp"
+          >
+            <h4 style="margin: 0px">
+              You are logged in. Wait for someone to connect with you.
+            </h4>
+          </div>
+          <!-- <div class="mdl-card mdl-shadow--2dp" style="padding: 20px">
+            <h3>You are requesting to start streaming</h3>
+            <div class="mdl-textfield mdl-js-textfield">
+              <input
+                class="mdl-textfield__input"
+                type="text"
+                id="target"
+                placeholder="Enter target (e.g., android)"
+              />
+            </div>
+            <br />
+            <button
+              class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored"
+              onclick="sendStartStreaming()"
+            >
+              Request
+            </button>
+          </div> -->
+        </div>
+
+        <!-- Notification for incoming offer -->
+        <div id="offer-container" class="hidden">
+          <div class="mdl-card mdl-shadow--2dp" style="padding: 20px">
+            <p>
+              Someone is trying to connect. Do you want to accept the
+              connection?
+            </p>
+            <button
+              id="accept-offer-btn"
+              class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored"
+              onclick="acceptOffer()"
+            >
+              Accept
+            </button>
+          </div>
+        </div>
+
+        <!-- Messaging UI -->
+        <div id="message-container" class="hidden">
+          <div class="mdl-card mdl-shadow--2dp" style="padding: 20px">
+            <h3>Messaging</h3>
+            <div id="message-display"></div>
+            <div class="mdl-textfield mdl-js-textfield">
+              <input
+                class="mdl-textfield__input"
+                type="text"
+                id="message-input"
+                placeholder="Type a message"
+              />
+            </div>
+            <br />
+            <button
+              class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored"
+              onclick="sendMessage()"
+            >
+              Send
+            </button>
+          </div>
+        </div>
+
+        <!-- Toggle Message Button -->
+        <button
+          id="toggle-message-btn"
+          class="mdl-button mdl-js-button mdl-button--icon"
+          onclick="toggleMessageContainer()"
+          style="position: fixed; top: 20px; right: 20px"
+        >
+          <i class="material-icons">message</i>
+        </button>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
