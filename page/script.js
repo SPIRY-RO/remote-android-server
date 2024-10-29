@@ -34,17 +34,17 @@ let dragThreshold = 5; // Set a threshold to determine if it's a drag or a click
 const config = {
     iceServers: [
         {
-            urls: "stun:relay3.expressturn.com:3478"
+            urls: "stun:lexidome.com:3478"
         },
         {
-            urls: "turn:relay3.expressturn.com:3478?transport=udp",
-            username: "efKY1G0OOQ9YBWHHNE",
-            credential: "e6ymGQPmbD7WHMqR"
+            urls: "turn:lexidome.com:3478?transport=udp",
+            username: "user1",
+            credential: "pass1"
         },
         {
-            urls: "turn:relay3.expressturn.com:3478?transport=tcp",
-            username: "efKY1G0OOQ9YBWHHNE",
-            credential: "e6ymGQPmbD7WHMqR"
+            urls: "turn:lexidome.com:5349?transport=tcp",
+            username: "user1",
+            credential: "pass1"
         }
     ]
 };
