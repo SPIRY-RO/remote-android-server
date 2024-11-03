@@ -33,18 +33,26 @@ let dragThreshold = 5; // Set a threshold to determine if it's a drag or a click
 
 const config = {
     iceServers: [
+        { urls: "stun:stun.l.google.com:19302" },
+        { urls: "stun:stun.l.google.com:5349" },
+        { urls: "stun:stun1.l.google.com:3478" },
+        { urls: "stun:stun1.l.google.com:5349" },
+        { urls: "stun:stun2.l.google.com:19302" },
+        { urls: "stun:stun2.l.google.com:5349" },
+        { urls: "stun:stun3.l.google.com:3478" },
+        { urls: "stun:stun3.l.google.com:5349" },
+        { urls: "stun:stun4.l.google.com:19302" },
+        { urls: "stun:stun4.l.google.com:5349" }
+        ,
         {
-            urls: "stun:lexidome.com:3478"
+            urls: "turn:webxresearch.com:3478?transport=udp",
+            username: "spiry",
+            credential: "web123"
         },
         {
-            urls: "turn:lexidome.com:3478?transport=udp",
-            username: "user1",
-            credential: "pass1"
-        },
-        {
-            urls: "turn:lexidome.com:5349?transport=tcp",
-            username: "user1",
-            credential: "pass1"
+            urls: "turn:webxresearch.com:5349?transport=tcp",
+            username: "spiry",
+            credential: "web123"
         }
     ]
 };
