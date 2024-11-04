@@ -45,12 +45,12 @@ const config = {
         { urls: "stun:stun4.l.google.com:5349" }
         ,
         {
-            urls: "turn:webxresearch.com:3478?transport=udp",
+            urls: "turn:0.0.0.0:3478?transport=udp",
             username: "spiry",
             credential: "web123"
         },
         {
-            urls: "turn:webxresearch.com:5349?transport=tcp",
+            urls: "turn:0.0.0.0:5349?transport=tcp",
             username: "spiry",
             credential: "web123"
         }
