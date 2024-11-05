@@ -36,16 +36,6 @@ const config = {
         { urls: "stun:relay1.expressturn.com:3478"},
  
         {
-            urls: "turn:relay1.expressturn.com:80?transport=tcp",
-            username: "efKY1G0OOQ9YBWHHNE",
-            credential: "e6ymGQPmbD7WHMqR"
-        },
-        {
-            urls: "turn:relay1.expressturn.com:443?transport=udp",
-            username: "efKY1G0OOQ9YBWHHNE",
-            credential: "e6ymGQPmbD7WHMqR"
-        },
-        {
             urls: "turn:relay1.expressturn.com:3478?transport=udp",
             username: "efKY1G0OOQ9YBWHHNE",
             credential: "e6ymGQPmbD7WHMqR"
