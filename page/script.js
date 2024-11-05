@@ -33,24 +33,15 @@ let dragThreshold = 5; // Set a threshold to determine if it's a drag or a click
 
 const config = {
     iceServers: [
-        { urls: "stun:stun.l.google.com:19302" },
-        { urls: "stun:stun.l.google.com:5349" },
-        { urls: "stun:stun1.l.google.com:3478" },
-        { urls: "stun:stun1.l.google.com:5349" },
-        { urls: "stun:stun2.l.google.com:19302" },
-        { urls: "stun:stun2.l.google.com:5349" },
-        { urls: "stun:stun3.l.google.com:3478" },
-        { urls: "stun:stun3.l.google.com:5349" },
-        { urls: "stun:stun4.l.google.com:19302" },
-        { urls: "stun:stun4.l.google.com:5349" }
+        { urls: "stun:stun.cloudflare.com:3478" }
         ,
         {
-            urls: "turn:188.245.77.22:3478?transport=udp",
+            urls: "turn:turn.cloudflare.com:3478?transport=udp",
             username: "spiry",
             credential: "web123"
         },
         {
-            urls: "turn:188.245.77.22:5349?transport=tcp",
+            urls: "turn:turn.cloudflare.com:5349?transport=tcp",
             username: "spiry",
             credential: "web123"
         }
