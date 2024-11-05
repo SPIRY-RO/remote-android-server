@@ -130,7 +130,7 @@ function login() {
 
     // Initialize WebSocket connection
     // socket = new WebSocket("ws://192.168.0.169:3001"); // Connect to your signaling server
-    socket = new WebSocket("ws://0.0.0.0:3002"); // Connect to your signaling server
+    socket = new WebSocket("ws://188.245.77.22:3002"); // Connect to your signaling server
     // socket = new WebSocket("ws://168.119.60.76:3001"); // Connect to your signaling server
 
     socket.onopen = () => {
