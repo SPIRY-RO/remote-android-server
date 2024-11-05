@@ -37,13 +37,13 @@ const config = {
         ,
         {
             urls: "turn:turn.cloudflare.com:3478?transport=udp",
-            username: "spiry",
-            credential: "web123"
+            username: "23dab464fffefb50b0c8579a9fc672c3",
+            credential: "c3b06e572f42ec219e0005b0c63d48209c8b0b757508a97338458ca501dc40c4"
         },
         {
             urls: "turn:turn.cloudflare.com:5349?transport=tcp",
-            username: "spiry",
-            credential: "web123"
+            username: "23dab464fffefb50b0c8579a9fc672c3",
+            credential: "c3b06e572f42ec219e0005b0c63d48209c8b0b757508a97338458ca501dc40c4"
         }
     ]
 };
