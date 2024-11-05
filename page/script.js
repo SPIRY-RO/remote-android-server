@@ -13,46 +13,64 @@ let deviceScreenWidth = null;
 let deviceScreenHeight = null;
 let scrollSensitivity = 1.5;
 
-
 let isDragging = false;
 let startX, startY;
 let movedX, movedY;
 let dragThreshold = 5; // Set a threshold to determine if it's a drag or a click
 
-
-// WebRTC configuration including TURN server
-// const config = {
-//     iceServers: [
-//         {
-//             urls: "turn:openrelay.metered.ca:443?transport=tcp", // Public TURN server
-//             username: "openrelayproject",
-//             credential: "openrelayproject",
-//         },
-//     ],
-// };
-
-const config = {
-    iceServers: [
-        { urls: "stun:stun.cloudflare.com:3478" }
-        ,
-        {
-            urls: "turn:turn.cloudflare.com:3478?transport=udp",
-            username: "23dab464fffefb50b0c8579a9fc672c3",
-            credential: "c3b06e572f42ec219e0005b0c63d48209c8b0b757508a97338458ca501dc40c4"
+// Function to fetch TURN credentials from Cloudflare
+async function fetchTurnCredentials() {
+    const response = await fetch('https://rtc.live.cloudflare.com/v1/turn/keys/ce94b44759a88e928927a6a798858913/credentials/generate', {
+        method: 'POST',
+        headers: {
+            'Authorization': 'Bearer 167b03372ab903ed3f2ef6d8896df10cad71df0f5695829fc2816e39749005f7',
+            'Content-Type': 'application/json'
         },
-        {
-            urls: "turn:turn.cloudflare.com:5349?transport=tcp",
-            username: "23dab464fffefb50b0c8579a9fc672c3",
-            credential: "c3b06e572f42ec219e0005b0c63d48209c8b0b757508a97338458ca501dc40c4"
-        }
-    ]
-};
+        body: JSON.stringify({ ttl: 86400 })
+    });
 
+    if (!response.ok) {
+        throw new Error('Failed to fetch TURN credentials');
+    }
 
+    const data = await response.json();
+    return data;
+}
 
+// Function to initialize WebRTC configuration
+async function initializeWebRTCConfig() {
+    try {
+        const credentials = await fetchTurnCredentials();
+
+        const config = {
+            iceServers: [
+                { urls: "stun:stun.cloudflare.com:3478" },
+                {
+                    urls: "turn:turn.cloudflare.com:3478?transport=udp",
+                    username: credentials.username,
+                    credential: credentials.credential
+                },
+                {
+                    urls: "turn:turn.cloudflare.com:3478?transport=tcp",
+                    username: credentials.username,
+                    credential: credentials.credential
+                },
+                {
+                    urls: "turns:turn.cloudflare.com:5349?transport=tcp",
+                    username: credentials.username,
+                    credential: credentials.credential
+                }
+            ]
+        };
+
+        return config;
+    } catch (error) {
+        console.error('Error initializing WebRTC config:', error);
+    }
+}
 
 // Login function
-function login() {
+async function login() {
     const username = document.getElementById("username").value;
     if (!username) {
         alert("Please enter a username");
@@ -61,9 +79,7 @@ function login() {
     loggedInUsername = username;
 
     // Initialize WebSocket connection
-    // socket = new WebSocket("ws://192.168.0.169:3001"); // Connect to your signaling server
     socket = new WebSocket("ws://188.245.77.22:3002"); // Connect to your signaling server
-    // socket = new WebSocket("ws://168.119.60.76:3001"); // Connect to your signaling server
 
     socket.onopen = () => {
         // Send a sign-in request
@@ -79,7 +95,7 @@ function login() {
         document.getElementById("request-container").classList.remove("hidden");
     };
 
-    socket.onmessage = (message) => {
+    socket.onmessage = async (message) => {
         const data = JSON.parse(message.data);
 
         switch (data.type) {
@@ -197,7 +213,8 @@ function acceptOffer() {
 }
 
 // Create an RTCPeerConnection
-function createPeerConnection() {
+async function createPeerConnection() {
+    const config = await initializeWebRTCConfig();
     peerConnection = new RTCPeerConnection(config); // Pass the TURN and STUN server configuration
 
     // When remote stream is received, display it
@@ -246,11 +263,6 @@ function createPeerConnection() {
             handleDataChannelMessage(event.data);
         };
     };
-
-    // Add click event listener to the video after connection is established
-    // remoteVideo.addEventListener("click", handleVideoClick);
-    // remoteVideo.addEventListener("wheel", handleScroll);
-
 
     // Add mouse event listeners to the remoteVideo element
     remoteVideo.addEventListener("mousedown", handleMouseDown);
@@ -519,10 +531,6 @@ function adjustVideoDisplay() {
     }
 }
 
-
-
-
-
 function sendScrollCommand(direction = "up", x = 500, y = 1500, difference = 500) {
     const message = JSON.stringify({
         type: "scroll",
@@ -539,8 +547,6 @@ function sendScrollCommand(direction = "up", x = 500, y = 1500, difference = 500
         console.log("Data channel is not open");
     }
 }
-
-
 
 // Create an SDP Offer and send it
 function createOffer(target) {
