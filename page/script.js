@@ -33,10 +33,7 @@ let dragThreshold = 5; // Set a threshold to determine if it's a drag or a click
 
 const config = {
     iceServers: [
-        { urls: "stun:relay1.expressturn.com:3478" ,
-            username: "efKY1G0OOQ9YBWHHNE",
-            credential: "e6ymGQPmbD7WHMqR"
-        },
+        { urls: "stun:relay1.expressturn.com:3478"},
  
         {
             urls: "turn:relay1.expressturn.com:80",
