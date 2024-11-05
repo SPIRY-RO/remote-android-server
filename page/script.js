@@ -13,64 +13,55 @@ let deviceScreenWidth = null;
 let deviceScreenHeight = null;
 let scrollSensitivity = 1.5;
 
+
 let isDragging = false;
 let startX, startY;
 let movedX, movedY;
 let dragThreshold = 5; // Set a threshold to determine if it's a drag or a click
 
-// Function to fetch TURN credentials from Cloudflare
-async function fetchTurnCredentials() {
-    const response = await fetch('https://rtc.live.cloudflare.com/v1/turn/keys/ce94b44759a88e928927a6a798858913/credentials/generate', {
-        method: 'POST',
-        headers: {
-            'Authorization': 'Bearer 167b03372ab903ed3f2ef6d8896df10cad71df0f5695829fc2816e39749005f7',
-            'Content-Type': 'application/json'
+
+// WebRTC configuration including TURN server
+// const config = {
+//     iceServers: [
+//         {
+//             urls: "turn:openrelay.metered.ca:443?transport=tcp", // Public TURN server
+//             username: "openrelayproject",
+//             credential: "openrelayproject",
+//         },
+//     ],
+// };
+
+const config = {
+    iceServers: [
+        { urls: "stun:stun.l.google.com:19302" },
+        { urls: "stun:stun.l.google.com:5349" },
+        { urls: "stun:stun1.l.google.com:3478" },
+        { urls: "stun:stun1.l.google.com:5349" },
+        { urls: "stun:stun2.l.google.com:19302" },
+        { urls: "stun:stun2.l.google.com:5349" },
+        { urls: "stun:stun3.l.google.com:3478" },
+        { urls: "stun:stun3.l.google.com:5349" },
+        { urls: "stun:stun4.l.google.com:19302" },
+        { urls: "stun:stun4.l.google.com:5349" }
+        ,
+        {
+            urls: "turn:webxresearch.com:3478?transport=udp",
+            username: "spiry",
+            credential: "web123"
         },
-        body: JSON.stringify({ ttl: 86400 })
-    });
+        {
+            urls: "turn:webxresearch.com:5349?transport=tcp",
+            username: "spiry",
+            credential: "web123"
+        }
+    ]
+};
 
-    if (!response.ok) {
-        throw new Error('Failed to fetch TURN credentials');
-    }
 
-    const data = await response.json();
-    return data;
-}
 
-// Function to initialize WebRTC configuration
-async function initializeWebRTCConfig() {
-    try {
-        const credentials = await fetchTurnCredentials();
-
-        const config = {
-            iceServers: [
-                { urls: "stun:stun.cloudflare.com:3478" },
-                {
-                    urls: "turn:turn.cloudflare.com:3478?transport=udp",
-                    username: credentials.username,
-                    credential: credentials.credential
-                },
-                {
-                    urls: "turn:turn.cloudflare.com:3478?transport=tcp",
-                    username: credentials.username,
-                    credential: credentials.credential
-                },
-                {
-                    urls: "turns:turn.cloudflare.com:5349?transport=tcp",
-                    username: credentials.username,
-                    credential: credentials.credential
-                }
-            ]
-        };
-
-        return config;
-    } catch (error) {
-        console.error('Error initializing WebRTC config:', error);
-    }
-}
 
 // Login function
-async function login() {
+function login() {
     const username = document.getElementById("username").value;
     if (!username) {
         alert("Please enter a username");
@@ -79,7 +70,9 @@ async function login() {
     loggedInUsername = username;
 
     // Initialize WebSocket connection
-    socket = new WebSocket("ws://188.245.77.22:3002"); // Connect to your signaling server
+    // socket = new WebSocket("ws://192.168.0.169:3001"); // Connect to your signaling server
+    socket = new WebSocket("ws://0.0.0.0:3002"); // Connect to your signaling server
+    // socket = new WebSocket("ws://168.119.60.76:3001"); // Connect to your signaling server
 
     socket.onopen = () => {
         // Send a sign-in request
@@ -95,7 +88,7 @@ async function login() {
         document.getElementById("request-container").classList.remove("hidden");
     };
 
-    socket.onmessage = async (message) => {
+    socket.onmessage = (message) => {
         const data = JSON.parse(message.data);
 
         switch (data.type) {
@@ -213,8 +206,7 @@ function acceptOffer() {
 }
 
 // Create an RTCPeerConnection
-async function createPeerConnection() {
-    const config = await initializeWebRTCConfig();
+function createPeerConnection() {
     peerConnection = new RTCPeerConnection(config); // Pass the TURN and STUN server configuration
 
     // When remote stream is received, display it
@@ -263,6 +255,11 @@ async function createPeerConnection() {
             handleDataChannelMessage(event.data);
         };
     };
+
+    // Add click event listener to the video after connection is established
+    // remoteVideo.addEventListener("click", handleVideoClick);
+    // remoteVideo.addEventListener("wheel", handleScroll);
+
 
     // Add mouse event listeners to the remoteVideo element
     remoteVideo.addEventListener("mousedown", handleMouseDown);
@@ -531,6 +528,10 @@ function adjustVideoDisplay() {
     }
 }
 
+
+
+
+
 function sendScrollCommand(direction = "up", x = 500, y = 1500, difference = 500) {
     const message = JSON.stringify({
         type: "scroll",
@@ -547,6 +548,8 @@ function sendScrollCommand(direction = "up", x = 500, y = 1500, difference = 500
         console.log("Data channel is not open");
     }
 }
+
+
 
 // Create an SDP Offer and send it
 function createOffer(target) {
